@@ -104,9 +104,13 @@ var initPlugin = function initPlugin(UICorePlugin) {
         portal.setAttribute('id', id);
 
         this.$el.append(portal);
-        this.core.getPlugin('globo_media_control').$el.prepend(this.$el[0]);
 
         return portal;
+      }
+    }, {
+      key: 'mediaControl',
+      get: function get() {
+        return this.core.getPlugin('globo_media_control');
       }
     }, {
       key: 'name',
@@ -116,12 +120,12 @@ var initPlugin = function initPlugin(UICorePlugin) {
     }, {
       key: 'panel',
       get: function get() {
-        return 'upper';
+        return 'middle';
       }
     }, {
       key: 'position',
       get: function get() {
-        return 'right';
+        return 'center';
       }
     }, {
       key: 'attributes',
