@@ -7,7 +7,8 @@
   "license": "MIT",
   "scripts": {
     "build": "node_modules/.bin/webpack",
-    "watch": "node_modules/.bin/webpack --watch"
+    "watch": "node_modules/.bin/webpack --watch",
+		"serve": "webpack-dev-server --content-base ./dist/"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
