@@ -1,0 +1,30 @@
+<html>
+<head>
+  <script src="https://cdn.jsdelivr.net/npm/clappr@latest/dist/clappr.min.js"></script>
+  <script src="https://s.videos.globo.com/p2/j/api.min.js"></script>
+  <script src="./clappr-create-portal.js"></script>
+  <script>
+
+  </script>
+</head>
+<body>
+  <div id="player"></div>
+  <script>
+    var player = new WM.Player({
+      videosIDs: 5964532, //"http://clappr.io/highline.mp4",
+      plugins: {
+        core: [ clapprCreatePortal(Clappr.UICorePlugin) ]
+      },
+      options: {
+        mediaControl: {
+          plugins: [ 'clapprCreatePortal' ]
+        }
+      },
+      width: '640px',
+      height: '360px'
+    });
+
+    player.attachTo(document.getElementById('player'))
+  </script>
+</body>
+</html>
