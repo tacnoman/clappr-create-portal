@@ -6,16 +6,20 @@ const initPlugin = (
       super(core)
     }
 
+    get mediaControl() {
+      return this.core.getPlugin('globo_media_control')
+    }
+
     get name() {
       return 'clapprCreatePortal'
     }
 
     get panel() {
-      return 'upper'
+      return 'middle'
     }
 
     get position() {
-      return 'right'
+      return 'center'
     }
 
     get attributes() {
@@ -39,7 +43,6 @@ const initPlugin = (
       portal.setAttribute('id', id)
 
       this.$el.append(portal)
-      this.core.getPlugin('globo_media_control').$el.prepend(this.$el[0])
 
       return portal
     }
