@@ -7,14 +7,17 @@ module.exports = {
     filename: 'clappr-create-portal.js'
   },
   module: {
-     loaders: [
-         {
-             test: /\.js$/,
-             loader: 'babel-loader',
-             query: {
-                 presets: ['es2015']
-             }
-         }
-     ]
+  loaders: [
+    {
+      test: /\.js$/,
+      loader: 'babel-loader',
+      query: {
+        presets: ['es2015']
+      }
+    }]
+  },
+  devServer: {
+    host: '0.0.0.0',
+    disableHostCheck: true
   }
 }
