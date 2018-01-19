@@ -1,56 +1,69 @@
-const initPlugin = (
-  UICorePlugin
-) => {
-  return class ClapprCreatePortal extends UICorePlugin {
-    constructor(core) {
-      super(core)
+class ClapprCreatePortal extends Clappr.CorePlugin {
+  constructor(core) {
+    super(core)
+    this.nextPortalID = 0
+    this.panels = ['lower', 'middle', 'upper']
+    this.positions = ['left', 'center', 'right']
+  }
+
+  get name() { return 'clapprCreatePortal' }
+
+  get mediaControl() {
+    return this.core.getPlugin('globo_media_control')
+  }
+
+  cachePanels() {
+    this.panels.forEach((panel) => {
+      this.positions.forEach((position) => {
+        const element = this.mediaControl.$el
+          .find(`.media-control-panel__${panel} .media-control-position__${position}`)
+
+        this.mediaControlBlock[panel + position] = element
+      })
+    })
+  }
+
+  getExternalInterface() {
+    return {
+      addPortal: this.addPortal
+    }
+  }
+
+  getPortal(id) {
+    const v = this.mediaControl.$el.find(`#${id}`)
+    if (v.length > 0) {
+      // TODO: return element if panel and position are different?
+      return v[0]
+    }
+  }
+
+  isValidPosition() {
+    if (this.positions.indexOf(position) === -1) {
+      console.error('position should be one of these: ["left", "center", "right"]')
+      return false
     }
 
-    get mediaControl() {
-      return this.core.getPlugin('globo_media_control')
+    if (this.panels.indexOf(panel) === -1) {
+      console.error('panel should be one of these: ["lower", "middle", "upper"]')
+      return false
     }
+  }
 
-    get name() {
-      return 'clapprCreatePortal'
-    }
+  addPortal(position, panel = 'middle') {
+    if(!this.isValidPosition()) return
 
-    get panel() {
-      return 'middle'
-    }
+    const id = this.nextPortalID++
 
-    get position() {
-      return 'center'
-    }
+    const portal = $('<div />', {
+      id,
+      'data-controls': '',
+      css: {width: '100px', height: '100px', background: 'red'}
+    })
 
-    get attributes() {
-      return {
-        'id': 'clapprPortal',
-        'data-controls': '',
-      }
-    }
+    this.mediaControlBlock[panel + position].append(portal[0])
 
-    get tagName() {
-      return 'div'
-    }
-
-    addPortal(id) {
-      const v = this.$el.find(`#${id}`)
-      if(v.length > 0) {
-        return v[0]
-      }
-
-      const portal = document.createElement('div')
-      portal.setAttribute('id', id)
-
-      this.$el.append(portal)
-
-      return portal
-    }
+    return { id, element: portal[0] }
   }
 }
 
-if(typeof window !== 'undefined') {
-  window.clapprCreatePortal = initPlugin
-}
-
-export default initPlugin
+export default ClapprCreatePortal
