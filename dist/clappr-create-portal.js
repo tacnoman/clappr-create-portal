@@ -1,3 +1,4 @@
+var ClapprCreatePortal =
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -82,75 +83,97 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var initPlugin = function initPlugin(UICorePlugin) {
-  return function (_UICorePlugin) {
-    _inherits(ClapprCreatePortal, _UICorePlugin);
+var ClapprCreatePortal = function (_Clappr$CorePlugin) {
+  _inherits(ClapprCreatePortal, _Clappr$CorePlugin);
 
-    function ClapprCreatePortal(core) {
-      _classCallCheck(this, ClapprCreatePortal);
+  function ClapprCreatePortal(core) {
+    _classCallCheck(this, ClapprCreatePortal);
 
-      return _possibleConstructorReturn(this, (ClapprCreatePortal.__proto__ || Object.getPrototypeOf(ClapprCreatePortal)).call(this, core));
+    var _this = _possibleConstructorReturn(this, (ClapprCreatePortal.__proto__ || Object.getPrototypeOf(ClapprCreatePortal)).call(this, core));
+
+    _this.nextPortalID = 0;
+    _this.panels = ['lower', 'middle', 'upper'];
+    _this.positions = ['left', 'center', 'right'];
+    return _this;
+  }
+
+  _createClass(ClapprCreatePortal, [{
+    key: 'cachePanels',
+    value: function cachePanels() {
+      var _this2 = this;
+
+      this.panels.forEach(function (panel) {
+        _this2.positions.forEach(function (position) {
+          var element = _this2.mediaControl.$el.find('.media-control-panel__' + panel + ' .media-control-position__' + position);
+
+          _this2.mediaControlBlock[panel + position] = element;
+        });
+      });
     }
-
-    _createClass(ClapprCreatePortal, [{
-      key: 'addPortal',
-      value: function addPortal(id) {
-        var v = this.$el.find('#' + id);
-        if (v.length > 0) {
-          return v[0];
-        }
-
-        var portal = document.createElement('div');
-        portal.setAttribute('id', id);
-
-        this.$el.append(portal);
-
-        return portal;
+  }, {
+    key: 'getExternalInterface',
+    value: function getExternalInterface() {
+      return {
+        addPortal: this.addPortal
+      };
+    }
+  }, {
+    key: 'getPortal',
+    value: function getPortal(id) {
+      var v = this.mediaControl.$el.find('#' + id);
+      if (v.length > 0) {
+        // TODO: return element if panel and position are different?
+        return v[0];
       }
-    }, {
-      key: 'mediaControl',
-      get: function get() {
-        return this.core.getPlugin('globo_media_control');
+    }
+  }, {
+    key: 'isValidPosition',
+    value: function isValidPosition() {
+      if (this.positions.indexOf(position) === -1) {
+        console.error('position should be one of these: ["left", "center", "right"]');
+        return false;
       }
-    }, {
-      key: 'name',
-      get: function get() {
-        return 'clapprCreatePortal';
-      }
-    }, {
-      key: 'panel',
-      get: function get() {
-        return 'middle';
-      }
-    }, {
-      key: 'position',
-      get: function get() {
-        return 'center';
-      }
-    }, {
-      key: 'attributes',
-      get: function get() {
-        return {
-          'id': 'clapprPortal',
-          'data-controls': ''
-        };
-      }
-    }, {
-      key: 'tagName',
-      get: function get() {
-        return 'div';
-      }
-    }]);
 
-    return ClapprCreatePortal;
-  }(UICorePlugin);
-};
+      if (this.panels.indexOf(panel) === -1) {
+        console.error('panel should be one of these: ["lower", "middle", "upper"]');
+        return false;
+      }
+    }
+  }, {
+    key: 'addPortal',
+    value: function addPortal(position) {
+      var panel = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'middle';
 
-if (typeof window !== 'undefined') {
-  window.clapprCreatePortal = initPlugin;
-}
+      if (!this.isValidPosition()) return;
 
-exports.default = initPlugin;
+      var id = this.nextPortalID++;
+
+      var portal = $('<div />', {
+        id: id,
+        'data-controls': '',
+        css: { width: '100px', height: '100px', background: 'red' }
+      });
+
+      this.mediaControlBlock[panel + position].append(portal[0]);
+
+      return { id: id, element: portal[0] };
+    }
+  }, {
+    key: 'name',
+    get: function get() {
+      return 'clapprCreatePortal';
+    }
+  }, {
+    key: 'mediaControl',
+    get: function get() {
+      return this.core.getPlugin('globo_media_control');
+    }
+  }]);
+
+  return ClapprCreatePortal;
+}(Clappr.CorePlugin);
+
+exports.default = ClapprCreatePortal;
 
 /***/ })
 /******/ ]);
