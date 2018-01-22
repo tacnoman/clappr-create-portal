@@ -77,14 +77,16 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+var _Clappr = __webpack_require__(1);
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var ClapprCreatePortal = function (_Clappr$CorePlugin) {
-  _inherits(ClapprCreatePortal, _Clappr$CorePlugin);
+var ClapprCreatePortal = function (_CorePlugin) {
+  _inherits(ClapprCreatePortal, _CorePlugin);
 
   function ClapprCreatePortal(core) {
     _classCallCheck(this, ClapprCreatePortal);
@@ -161,7 +163,7 @@ var ClapprCreatePortal = function (_Clappr$CorePlugin) {
   }, {
     key: 'name',
     get: function get() {
-      return 'clapprCreatePortal';
+      return 'clappr_create_portal';
     }
   }, {
     key: 'mediaControl',
@@ -171,9 +173,16 @@ var ClapprCreatePortal = function (_Clappr$CorePlugin) {
   }]);
 
   return ClapprCreatePortal;
-}(Clappr.CorePlugin);
+}(_Clappr.CorePlugin);
 
 exports.default = ClapprCreatePortal;
+module.exports = exports['default'];
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports) {
+
+module.exports = Clappr;
 
 /***/ })
 /******/ ]);

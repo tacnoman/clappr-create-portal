@@ -1,4 +1,6 @@
-class ClapprCreatePortal extends Clappr.CorePlugin {
+import {CorePlugin} from 'Clappr'
+
+export default class ClapprCreatePortal extends CorePlugin {
   constructor(core) {
     super(core)
     this.nextPortalID = 0
@@ -6,7 +8,7 @@ class ClapprCreatePortal extends Clappr.CorePlugin {
     this.positions = ['left', 'center', 'right']
   }
 
-  get name() { return 'clapprCreatePortal' }
+  get name() { return 'clappr_create_portal' }
 
   get mediaControl() {
     return this.core.getPlugin('globo_media_control')
@@ -65,5 +67,3 @@ class ClapprCreatePortal extends Clappr.CorePlugin {
     return { id, element: portal[0] }
   }
 }
-
-export default ClapprCreatePortal
