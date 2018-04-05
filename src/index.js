@@ -73,10 +73,15 @@ class ClapprCreatePortal extends Clappr.CorePlugin {
     return this.mediaControlBlock[key]
   }
 
-  addPluginPortal(attributes = {}) {
+  addPluginPortal(tag='div', attributes = {}) {
     const id = generator.next().value
 
-    const portal = $('<div />', Object.assign({}, { id }, attributes))
+    if (typeof attributes.style === 'Object') {
+      console.error('You must pass style as a string')
+      return
+    }
+
+    const portal = $(`<${tag} />`, Object.assign({}, { id }, attributes))
 
     this.core.$el.append(portal)
     return { id, elment: portal[0] }
