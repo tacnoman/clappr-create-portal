@@ -1,7 +1,7 @@
 {
   "name": "clappr-create-portal",
   "version": "0.0.1",
-  "main": "src/index.js",
+  "main": "dist/clappr-create-portal",
   "repository": "git@github.com:tacnoman/clappr-create-portal.git",
   "author": "Globo.com - Clappr",
   "license": "MIT",
@@ -9,15 +9,11 @@
     "build": "node_modules/.bin/webpack",
     "serve": "webpack-dev-server --content-base ./dist/ --host 0.0.0.0 --watch"
   },
-  "dependencies": {
-    "clappr": "^0.2.66"
-  },
   "devDependencies": {
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
     "babel-plugin-add-module-exports": "^0.2.1",
     "babel-preset-es2015": "^6.24.1",
-    "clappr": "^0.2.66",
     "webpack": "^3.10.0",
     "webpack-dev-server": "^2.11.0"
   }

@@ -1,45 +1,37 @@
-import {CorePlugin} from 'Clappr'
+const { CorePlugin } = Clappr
 
-export default class ClapprCreatePortal extends CorePlugin {
+const getNewId = function* () {
+  let i = 0
+
+  while(true) {
+    yield `__portalIdPlugin-${++i}`
+  }
+}
+
+const generator = getNewId()
+
+class ClapprCreatePortal extends Clappr.CorePlugin {
   constructor(core) {
     super(core)
-    this.nextPortalID = 0
     this.panels = ['lower', 'middle', 'upper']
     this.positions = ['left', 'center', 'right']
+    this.mediaControlBlock = {}
   }
 
-  get name() { return 'clappr_create_portal' }
+  get name() { return 'clapprCreatePortal' }
 
   get mediaControl() {
     return this.core.getPlugin('globo_media_control')
   }
 
-  cachePanels() {
-    this.panels.forEach((panel) => {
-      this.positions.forEach((position) => {
-        const element = this.mediaControl.$el
-          .find(`.media-control-panel__${panel} .media-control-position__${position}`)
-
-        this.mediaControlBlock[panel + position] = element
-      })
-    })
-  }
-
   getExternalInterface() {
     return {
-      addPortal: this.addPortal
+      addMediaControlPortal: this.addMediaControlPortal,
+      addPluginPortal: addPluginPortal
     }
   }
 
-  getPortal(id) {
-    const v = this.mediaControl.$el.find(`#${id}`)
-    if (v.length > 0) {
-      // TODO: return element if panel and position are different?
-      return v[0]
-    }
-  }
-
-  isValidPosition() {
+  isValidPosition(position, panel) {
     if (this.positions.indexOf(position) === -1) {
       console.error('position should be one of these: ["left", "center", "right"]')
       return false
@@ -49,21 +41,50 @@ export default class ClapprCreatePortal extends CorePlugin {
       console.error('panel should be one of these: ["lower", "middle", "upper"]')
       return false
     }
+
+    return true
   }
 
-  addPortal(position, panel = 'middle') {
-    if(!this.isValidPosition()) return
+  addMediaControlPortal(position, panel = 'middle') {
+    if(!this.isValidPosition(position, panel)) return
 
-    const id = this.nextPortalID++
+    const id = generator.next().value
 
     const portal = $('<div />', {
       id,
       'data-controls': '',
-      css: {width: '100px', height: '100px', background: 'red'}
     })
 
-    this.mediaControlBlock[panel + position].append(portal[0])
+    const block = this.getMediaControlBlock(panel, position)
+    block.append(portal[0])
 
     return { id, element: portal[0] }
   }
+
+  getMediaControlBlock(panel, position) {
+    const key = panel + position
+
+    if (!this.mediaControlBlock[key]) {
+      const element = this.mediaControl.$el
+        .find(`.media-control-panel__${panel} .media-control-position__${position}`)
+      this.mediaControlBlock[key] = element
+    }
+
+    return this.mediaControlBlock[key]
+  }
+
+  addPluginPortal(attributes = {}) {
+    const id = generator.next().value
+
+    const portal = $('<div />', Object.assign({}, { id }, attributes))
+
+    this.core.$el.append(portal)
+    return { id, elment: portal[0] }
+  }
+
+  render() {
+    return this
+  }
 }
+
+export default ClapprCreatePortal
