@@ -2,21 +2,23 @@
 <head>
   <script src="https://cdn.jsdelivr.net/npm/clappr@latest/dist/clappr.min.js"></script>
   <script src="https://s.videos.globo.com/p2/j/api.min.js"></script>
-  <script src="./clappr-create-portal.js"></script>
+  <script src="clappr-create-portal.js"></script>
 </head>
 <body>
   <div id="player" style="width: 640px; height: 360px;"></div>
   <script>
-    var player = new WM.Player({
-      videosIDs: '5964532',
-      plugins: {
-        core: [ClapprCreatePortal]
-      },
-      width: '100%',
-      height: '100%'
-    });
+    window.onload = function() {
+      var player = new WM.Player({
+        videosIDs: '5964532',
+        plugins: {
+          core: [ClapprCreatePortal]
+        },
+        width: '100%',
+        height: '100%'
+      });
 
-    player.attachTo(document.getElementById('player'))
+      player.attachTo(document.getElementById('player'))
+    }
   </script>
 </body>
 </html>

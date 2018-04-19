@@ -1,14 +1,18 @@
 const { CorePlugin } = Clappr
 
-const getNewId = function* () {
-  let i = 0
+class IdGenerator {
+  constructor() {
+    this.counter = 1
+  }
 
-  while(true) {
-    yield `__portalIdPlugin-${++i}`
+  next() {
+    const id = `__portalIdPlugin-${this.counter}`
+    this.counter += 1
+    return id
   }
 }
 
-const generator = getNewId()
+const generator = new IdGenerator
 
 class ClapprCreatePortal extends Clappr.CorePlugin {
   constructor(core) {
@@ -27,7 +31,8 @@ class ClapprCreatePortal extends Clappr.CorePlugin {
   getExternalInterface() {
     return {
       addMediaControlPortal: this.addMediaControlPortal,
-      addPluginPortal: addPluginPortal
+      addVideoContainerPortal: this.addVideoContainerPortal,
+      addPluginPortal: this.addPluginPortal
     }
   }
 
@@ -45,21 +50,6 @@ class ClapprCreatePortal extends Clappr.CorePlugin {
     return true
   }
 
-  addMediaControlPortal(position, panel = 'middle') {
-    if(!this.isValidPosition(position, panel)) return
-
-    const id = generator.next().value
-
-    const portal = $('<div />', {
-      id,
-      'data-controls': '',
-    })
-
-    const block = this.getMediaControlBlock(panel, position)
-    block.append(portal[0])
-
-    return { id, element: portal[0] }
-  }
 
   getMediaControlBlock(panel, position) {
     const key = panel + position
@@ -73,8 +63,8 @@ class ClapprCreatePortal extends Clappr.CorePlugin {
     return this.mediaControlBlock[key]
   }
 
-  addPluginPortal(tag='div', attributes = {}) {
-    const id = generator.next().value
+  addVideoContainerPortal(tag='div', attributes = {}) {
+    const id = generator.next()
 
     if (typeof attributes.style === 'Object') {
       console.error('You must pass style as a string')
@@ -83,8 +73,38 @@ class ClapprCreatePortal extends Clappr.CorePlugin {
 
     const portal = $(`<${tag} />`, Object.assign({}, { id }, attributes))
 
-    this.core.$el.append(portal)
-    return { id, elment: portal[0] }
+    this.core.getCurrentContainer().$el.append(portal[0])
+    return { id, element: portal[0] }
+  }
+
+  addMediaControlPortal(position, panel = 'middle') {
+    if(!this.isValidPosition(position, panel)) return
+
+    const id = generator.next()
+
+    const portal = $('<div />', {
+      id,
+      'data-controls': '',
+    })
+
+    const block = this.getMediaControlBlock(panel, position)
+    block.append(portal[0])
+
+    return { id, element: portal[0] }
+  }
+
+  addPluginPortal(tag='div', attributes = {}) {
+    const id = generator.next()
+
+    if (typeof attributes.style === 'Object') {
+      console.error('You must pass style as a string')
+      return
+    }
+
+    const portal = $(`<${tag} />`, Object.assign({}, { id }, attributes))
+
+    this.core.$el.append(portal[0])
+    return { id, element: portal[0] }
   }
 
   render() {
