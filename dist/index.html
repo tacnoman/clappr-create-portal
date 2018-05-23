@@ -1,7 +1,7 @@
 <html>
 <head>
   <script src="https://cdn.jsdelivr.net/npm/clappr@latest/dist/clappr.min.js"></script>
-  <script src="https://s.videos.globo.com/p2/j/api.min.js"></script>
+  <script src="https://p.glbimg.com/api/stable/api.min.js"></script>
   <script src="clappr-create-portal.js"></script>
 </head>
 <body>
@@ -18,6 +18,28 @@
       });
 
       player.attachTo(document.getElementById('player'))
+      setTimeout(function() {
+        var createPortalPlugin = player.getPlugin('clapprCreatePortal')
+
+        window.pluginPortal = createPortalPlugin.addPluginPortal('div', {
+          style: 'z-index:9;position:absolute;width:100%;color:red;margin-top:20px;'
+        })
+
+        window.mediaControlPortal = createPortalPlugin.addMediaControlPortal('right', 'middle')
+
+        window.videoContainerPortal = createPortalPlugin.addVideoContainerPortal('div', {
+          style: 'z-index:9;position:absolute;top:0;color:#fff;background:#333;'
+        })
+
+        var mediaControlLayer = document.getElementById(mediaControlPortal.id)
+        mediaControlLayer.innerHTML = '<span>This is my mediaControl layer</span>'
+        mediaControlLayer.setAttribute('style', 'color:#fff;background:#333;')
+
+        document.getElementById(videoContainerPortal.id).innerHTML = '<span>This is my videoContainer layer</span>'
+
+        document.getElementById(pluginPortal.id).innerHTML = '<span>This is my pluginPortal layer</span>'
+
+      }, 1000)
     }
   </script>
 </body>
