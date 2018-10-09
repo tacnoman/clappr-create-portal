@@ -4,7 +4,7 @@ const webpack = require('webpack')
 module.exports = {
   entry: path.resolve(__dirname, 'src/index.js'),
   externals: {
-    Clappr: 'Clappr'
+    clappr: 'Clappr'
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
