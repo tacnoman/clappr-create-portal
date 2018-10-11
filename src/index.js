@@ -1,4 +1,4 @@
-const { CorePlugin } = Clappr
+import { CorePlugin } from 'clappr'
 
 class IdGenerator {
   constructor() {
@@ -14,10 +14,10 @@ class IdGenerator {
 
 const generator = new IdGenerator
 
-class ClapprCreatePortal extends Clappr.CorePlugin {
+class ClapprCreatePortal extends CorePlugin {
   constructor(core) {
     super(core)
-    this.panels = ['lower', 'middle', 'upper']
+    this.panels = ['front-layer', 'lower', 'middle', 'upper', 'back-layer']
     this.positions = ['left', 'center', 'right']
     this.mediaControlBlock = {}
   }
