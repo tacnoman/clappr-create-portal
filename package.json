@@ -1,6 +1,6 @@
 {
   "name": "clappr-create-portal",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "main": "dist/clappr-create-portal",
   "repository": "git@github.com:tacnoman/clappr-create-portal.git",
   "author": "Globo.com - Clappr",
