@@ -15,18 +15,9 @@ class IdGenerator {
 const generator = new IdGenerator
 
 class ClapprCreatePortal extends CorePlugin {
-  constructor(core) {
-    super(core)
-    this.panels = ['front-layer', 'lower', 'middle', 'upper', 'back-layer']
-    this.positions = ['left', 'center', 'right']
-    this.mediaControlBlock = {}
-  }
-
   get name() { return 'clapprCreatePortal' }
-
-  get mediaControl() {
-    return this.core.getPlugin('globo_media_control')
-  }
+  get supportedVersion() { return { min: '0.2.0', max: '0.5.0' } }
+  get mediaControl() { return this.core.getPlugin('globo_media_control')  || this.core.getPlugin('media_control') }
 
   getExternalInterface() {
     return {
@@ -34,6 +25,13 @@ class ClapprCreatePortal extends CorePlugin {
       addVideoContainerPortal: this.addVideoContainerPortal,
       addPluginPortal: this.addPluginPortal
     }
+  }
+
+  constructor(core) {
+    super(core)
+    this.panels = ['front-layer', 'lower', 'middle', 'upper', 'back-layer']
+    this.positions = ['left', 'center', 'right']
+    this.mediaControlBlock = {}
   }
 
   isValidPosition(position, panel) {
