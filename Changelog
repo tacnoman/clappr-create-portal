@@ -1,5 +1,6 @@
 0.0.3 = 2020-01-09
   - Add compatibility to clappr-core
+  - Set supported version
 
 0.0.2 - 2018-10-16
   - Adds new panels front-layer and back-layer
