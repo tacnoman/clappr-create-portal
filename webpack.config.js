@@ -10,7 +10,8 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
     filename: 'clappr-create-portal.js',
     library: 'ClapprCreatePortal',
-    libraryTarget: 'umd'
+    libraryTarget: 'umd',
+    publicPath: '/latest'
   },
   module: {
   loaders: [
